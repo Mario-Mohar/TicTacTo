@@ -1,3 +1,30 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.player-panel {
+    display: flex;
+    font-size: 32px;
+    margin-bottom: 32px;
+}
+
+.player-panel div {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
+.player-panel img {
+    width: 60px;
+    height: 60px;
+}
+
+.player-inactive {
+    opacity: 0.5;
+}
+
 table {
     border-collapse: collapse;
 }
@@ -7,9 +34,15 @@ tr {
 }
 
 td {
+    position: relative;
     width: 133px;
     height: 133px;
     border: 5px solid #000;
+    cursor: pointer;
+}
+
+td:hover {
+    background-color: rgba(2, 134, 13, 0.2);
 }
 
 tr:first-child td {
@@ -26,4 +59,18 @@ tr:last-child td {
 
 tr td:last-child {
     border-right: 0;
+}
+
+.resharp {
+    position: absolute;
+    top: 26px;
+    left: 26px;
+    bottom: 0;
+    right: 26px;
+    width: 80px;
+    height: 80px;
+}
+
+.d-none {
+    display: none;
 }

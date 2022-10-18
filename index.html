@@ -9,21 +9,25 @@
     <title>TicTacToe</title>
 </head>
 <body>
+    <div class="player-panel">
+        <div class="" id="player1"><img src="./img/circle.png">Player 1</div>
+        <div class="" id="player2"><img src="./img/cross.png">Player 2</div>
+    </div>
     <table>
         <tr>
-            <td id="0" onclick="play(0)"></td>
-            <td id="1" onclick="play(1)"></td>
-            <td id="2" onclick="play(2)"></td>
+            <td id="0" onclick="fillFields(0)"><img id="circle-0" class="resharp d-none" src="./img/circle.png"><img id="cross-0" class="resharp d-none" src="./img/cross.png"></td>
+            <td id="1" onclick="fillFields(1)"><img id="circle-1" class="resharp d-none" src="./img/circle.png"><img id="cross-1" class="resharp d-none" src="./img/cross.png"></td>
+            <td id="2" onclick="fillFields(2)"><img id="circle-2" class="resharp d-none" src="./img/circle.png"><img id="cross-2" class="resharp d-none" src="./img/cross.png"></td>
         </tr>
         <tr>
-            <td id="3" onclick="play(3)"></td>
-            <td id="4" onclick="play(4)"></td>
-            <td id="5" onclick="play(5)"></td>
+            <td id="3" onclick="fillFields(3)"><img id="circle-3" class="resharp d-none" src="./img/circle.png"><img id="cross-3" class="resharp d-none" src="./img/cross.png"></td>
+            <td id="4" onclick="fillFields(4)"><img id="circle-4" class="resharp d-none" src="./img/circle.png"><img id="cross-4" class="resharp d-none" src="./img/cross.png"></td>
+            <td id="5" onclick="fillFields(5)"><img id="circle-5" class="resharp d-none" src="./img/circle.png"><img id="cross-5" class="resharp d-none" src="./img/cross.png"></td>
         </tr>
         <tr>
-            <td id="6" onclick="play(6)"></td>
-            <td id="7" onclick="play(7)"></td>
-            <td id="8" onclick="play(8)"></td>
+            <td id="6" onclick="fillFields(6)"><img id="circle-6" class="resharp d-none" src="./img/circle.png"><img id="cross-6" class="resharp d-none" src="./img/cross.png"></td>
+            <td id="7" onclick="fillFields(7)"><img id="circle-7" class="resharp d-none" src="./img/circle.png"><img id="cross-7" class="resharp d-none" src="./img/cross.png"></td>
+            <td id="8" onclick="fillFields(8)"><img id="circle-8" class="resharp d-none" src="./img/circle.png"><img id="cross-8" class="resharp d-none" src="./img/cross.png"></td>
         </tr>
     </table>
 </body>
