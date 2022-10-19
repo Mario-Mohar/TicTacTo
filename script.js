@@ -34,28 +34,34 @@ function draw () {
 
 function checkForWin () {
     if(fields[0] === fields[1] && fields[1] === fields[2] && fields[0]) {  
-        winner = fields[0]; 
+        winner = fields[0]; //row1
+        document.getElementById('line-1').style.transform = 'scaleX(1)';
     }
     if(fields[3] === fields[4] && fields[4] === fields[5] && fields[3]) {
-        winner = fields[3]; 
+        winner = fields[3]; //row2
+        document.getElementById('line-2').style.transform = 'scaleX(1)';
     }
-    if(fields[7] === fields[8] && fields[8] === fields[9] && fields[7]) {
-        winner = fields[7]; 
+    if(fields[6] === fields[7] && fields[7] === fields[8] && fields[6]) {
+        winner = fields[6]; //row3
+        document.getElementById('line-3').style.transform = 'scaleX(1)';
     }
     if(fields[0] === fields[3] && fields[3] === fields[6] && fields[0]) {
-        winner = fields[0]; 
+        winner = fields[0]; //column1
+        document.getElementById('line-6').style.transform = 'rotate(90deg) scaleX(1)';
     }
     if(fields[1] === fields[4] && fields[4] === fields[7] && fields[1]) {
-        winner = fields[1]; 
+        winner = fields[1]; //column2
+        document.getElementById('line-4').style.transform = 'rotate(90deg) scaleX(1)';
     }
     if(fields[2] === fields[5] && fields[5] === fields[8] && fields[2]) {
-        winner = fields[2]; 
+        winner = fields[2]; //column3
+        document.getElementById('line-5').style.transform = 'rotate(90deg) scaleX(1)';
     }
-    if(fields[0] === fields[4] && fields[4] === fields[7] && fields[0]) {
-        winner = fields[0]; 
+    if(fields[0] === fields[4] && fields[4] === fields[8] && fields[0]) {
+        winner = fields[0]; //diagonal1
     }
     if(fields[2] === fields[4] && fields[4] === fields[6] && fields[2]) {
-        winner = fields[2]; 
+        winner = fields[2]; //diagonal3
     }
     if (winner) {
     console.log('You won!', winner);

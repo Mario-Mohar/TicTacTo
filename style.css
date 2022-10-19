@@ -74,3 +74,19 @@ tr td:last-child {
 .d-none {
     display: none;
 }
+
+.horizontal-line {
+    height: 10px;
+    width: 300px;
+    position: absolute;
+    top: 160px;
+    background-color: rgba(255, 0, 0, 0.5);
+    transform: scaleX(0.0);
+    transform: scaleY(0.0);
+    transition: transform 225ms ease-in-out;
+}
+
+.make-vertikal {
+    transform: rotate(90deg) scaleX(0.0);
+    top: 300px;
+}
