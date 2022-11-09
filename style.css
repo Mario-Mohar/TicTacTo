@@ -88,5 +88,10 @@ tr td:last-child {
 
 .make-vertikal {
     transform: rotate(90deg) scaleX(0.0);
+    position: absolute;
     top: 300px;
+}
+
+.tablediv {
+    position: relative;
 }
