@@ -1,6 +1,7 @@
 let fields = [];
 let gameOver = false;
 let currentShape = 'cross';
+let winner = null;
 
 function fillFields (id) {
     if (fields[id] === undefined && !gameOver) {
@@ -18,7 +19,7 @@ function fillFields (id) {
         console.log(fields);
         draw();
         checkForWin();
-}
+    }
 }
 
 function restart() {
@@ -82,11 +83,11 @@ function checkForWin () {
         document.getElementById('line-8').style.transform = 'rotate(-45deg) scaleX(1)';
     }
     if (winner) {
-    console.log('You won!', winner);
-    gameOver = true;
-    setTimeout(function () {
-        document.getElementById('gameover').classList.remove('d-none');
-        document.getElementById('start').classList.remove('d-none');
-    }, 500);
+        console.log('You won!', winner);
+        gameOver = true;
+        setTimeout(function () {
+            document.getElementById('gameover').classList.remove('d-none');
+            document.getElementById('start').classList.remove('d-none');
+        }, 500);
     }
 }
