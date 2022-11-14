@@ -25,6 +25,8 @@ function fillFields (id) {
 function restart() {
     gameOver = false;
     fields = [];
+    currentShape = 'cross';
+    winner = null;
     document.getElementById('gameover').classList.add('d-none');
     document.getElementById('start').classList.add('d-none');
 
