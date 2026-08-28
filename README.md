@@ -7,6 +7,12 @@ no server: three files and three images.
 
 **[English](#english) · [Deutsch](#deutsch)**
 
+<p align="center">
+  <img src="docs/spiel.png" alt="Board with three circles in the top row, a red line drawn through them, and two crosses in the middle row" width="330">
+  &nbsp;&nbsp;
+  <img src="docs/gameover.png" alt="Game over screen with a Start button to begin a new round" width="420">
+</p>
+
 ---
 
 # English
