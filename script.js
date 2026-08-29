@@ -30,8 +30,12 @@ function restart() {
     document.getElementById('gameover').classList.add('d-none');
     document.getElementById('start').classList.add('d-none');
 
-    for(let i = 1; i < 8; i++) {
-        document.getElementById('line-' + i).classList.add('d-none');
+    // Alle acht Linien, und ueber den Transform statt ueber d-none: die Linien
+    // sind per CSS auf Skalierung 0 unsichtbar, nie per display. Wer sie
+    // ausblendet, bekommt sie nie wieder zu sehen. Das Leeren faellt auf die
+    // CSS-Regel zurueck, checkForWin schreibt die Drehung ohnehin komplett neu.
+    for(let i = 1; i <= 8; i++) {
+        document.getElementById('line-' + i).style.transform = '';
     }
 
     for(let i = 0; i < 9; i++) {
@@ -87,9 +91,19 @@ function checkForWin () {
     if (winner) {
         console.log('You won!', winner);
         gameOver = true;
-        setTimeout(function () {
-            document.getElementById('gameover').classList.remove('d-none');
-            document.getElementById('start').classList.remove('d-none');
-        }, 500);
+        endRound();
+    } else if (fields.filter(Boolean).length === 9) {
+        // Volles Brett ohne Dreier. filter(Boolean) statt fields.length, weil
+        // fields luecken hat: wer zuerst auf Feld 5 klickt, hat length 6.
+        console.log('Draw!');
+        gameOver = true;
+        endRound();
     }
+}
+
+function endRound() {
+    setTimeout(function () {
+        document.getElementById('gameover').classList.remove('d-none');
+        document.getElementById('start').classList.remove('d-none');
+    }, 500);
 }
