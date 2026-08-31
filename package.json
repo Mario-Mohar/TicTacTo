@@ -1,0 +1,15 @@
+{
+  "name": "tictacto",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tic tac toe for two players at one screen. Plain HTML, CSS and JavaScript, no build, no server.",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.1",
+    "vitest": "^4.1.11"
+  }
+}

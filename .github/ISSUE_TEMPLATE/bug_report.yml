@@ -1,0 +1,24 @@
+name: Bug report
+description: Something behaves differently than it should
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: moves
+    attributes:
+      label: The moves that led to it
+      description: "Field numbers in order, top-left is 0 and bottom-right is 8. For example: 4, 0, 8, 2, 6"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+    validations:
+      required: true
