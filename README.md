@@ -1,5 +1,7 @@
 # Tic Tac Toe
 
+[![codecov](https://codecov.io/gh/Mario-Mohar/TicTacTo/graph/badge.svg)](https://codecov.io/gh/Mario-Mohar/TicTacTo)
+
 A tic tac toe game for two players at one screen. No build step, no dependencies,
 no server: three files and three images.
 
