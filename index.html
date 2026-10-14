@@ -9,37 +9,38 @@
     <title>TicTacToe</title>
 </head>
 <body>
-    <img src="./img/game-over.png" class="gameover d-none" id="gameover">
+    <img src="./img/game-over.png" class="gameover d-none" id="gameover" alt="Game over">
     <button class="btn btn-primary start d-none" onclick="restart()" id="start">Start</button>
     <div class="player-panel">
-        <div class="" id="player1"><img src="./img/circle.png">Player 1</div>
-        <div class="player-inactive" id="player2"><img src="./img/cross.png">Player 2</div>
+        <div class="" id="player1"><img src="./img/circle.png" alt="Circle:">Player 1</div>
+        <div class="player-inactive" id="player2"><img src="./img/cross.png" alt="Cross:">Player 2</div>
     </div>
+    <p id="status" class="visually-hidden" role="status" aria-live="polite">Player 1, circle, to move</p>
 
-<div class="tablediv">
-<div id="line-1" class="horizontal-line" style="top: 60px; left: 57px;"></div>
-<div id="line-2" class="horizontal-line" style="top: 200px; left: 57px;"></div>
-<div id="line-3" class="horizontal-line" style="top: 340px; left: 57px;"></div>
-<div id="line-4" class="horizontal-line make-vertikal" style="top: 200px; left: -84px;"></div>
-<div id="line-5" class="horizontal-line make-vertikal" style="top: 200px; left: 55px;"></div>
-<div id="line-6" class="horizontal-line make-vertikal" style="top: 200px; left: 197px;"></div>
-<div id="line-7" class="horizontal-line" style="top: 200px; width: 402px; transform: rotate(45deg) scaleX(0.0);"></div>
-<div id="line-8" class="horizontal-line" style="top: 200px; width: 402px; transform: rotate(-45deg) scaleX(0.0);"></div> 
-        <table>
+<div class="tablediv" role="group" aria-label="Board">
+<div id="line-1" class="horizontal-line" style="top: calc(100% / 6 - 5px); left: 12.5%;"></div>
+<div id="line-2" class="horizontal-line" style="top: calc(50% - 5px); left: 12.5%;"></div>
+<div id="line-3" class="horizontal-line" style="top: calc(500% / 6 - 5px); left: 12.5%;"></div>
+<div id="line-4" class="horizontal-line make-vertikal" style="top: calc(50% - 5px); left: calc(100% / 6 - 37.5%);"></div>
+<div id="line-5" class="horizontal-line make-vertikal" style="top: calc(50% - 5px); left: 12.5%;"></div>
+<div id="line-6" class="horizontal-line make-vertikal" style="top: calc(50% - 5px); left: calc(500% / 6 - 37.5%);"></div>
+<div id="line-7" class="horizontal-line" style="top: calc(50% - 5px); left: 0; width: 100%; transform: rotate(45deg) scaleX(0.0);"></div>
+<div id="line-8" class="horizontal-line" style="top: calc(50% - 5px); left: 0; width: 100%; transform: rotate(-45deg) scaleX(0.0);"></div>
+        <table role="presentation">
             <tr>
-                <td id="0" onclick="fillFields(0)"><img id="circle-0" class="resharp d-none" src="./img/circle.png"><img id="cross-0" class="resharp d-none" src="./img/cross.png"></td>
-                <td id="1" onclick="fillFields(1)"><img id="circle-1" class="resharp d-none" src="./img/circle.png"><img id="cross-1" class="resharp d-none" src="./img/cross.png"></td>
-                <td id="2" onclick="fillFields(2)"><img id="circle-2" class="resharp d-none" src="./img/circle.png"><img id="cross-2" class="resharp d-none" src="./img/cross.png"></td>
+                <td id="0"><button class="field" id="field-0" onclick="fillFields(0)" onkeydown="moveFocus(event, 0)" aria-label="Field 1, row 1, column 1, empty"><img id="circle-0" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-0" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
+                <td id="1"><button class="field" id="field-1" onclick="fillFields(1)" onkeydown="moveFocus(event, 1)" aria-label="Field 2, row 1, column 2, empty"><img id="circle-1" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-1" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
+                <td id="2"><button class="field" id="field-2" onclick="fillFields(2)" onkeydown="moveFocus(event, 2)" aria-label="Field 3, row 1, column 3, empty"><img id="circle-2" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-2" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
             </tr>
             <tr>
-                <td id="3" onclick="fillFields(3)"><img id="circle-3" class="resharp d-none" src="./img/circle.png"><img id="cross-3" class="resharp d-none" src="./img/cross.png"></td>
-                <td id="4" onclick="fillFields(4)"><img id="circle-4" class="resharp d-none" src="./img/circle.png"><img id="cross-4" class="resharp d-none" src="./img/cross.png"></td>
-                <td id="5" onclick="fillFields(5)"><img id="circle-5" class="resharp d-none" src="./img/circle.png"><img id="cross-5" class="resharp d-none" src="./img/cross.png"></td>
+                <td id="3"><button class="field" id="field-3" onclick="fillFields(3)" onkeydown="moveFocus(event, 3)" aria-label="Field 4, row 2, column 1, empty"><img id="circle-3" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-3" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
+                <td id="4"><button class="field" id="field-4" onclick="fillFields(4)" onkeydown="moveFocus(event, 4)" aria-label="Field 5, row 2, column 2, empty"><img id="circle-4" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-4" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
+                <td id="5"><button class="field" id="field-5" onclick="fillFields(5)" onkeydown="moveFocus(event, 5)" aria-label="Field 6, row 2, column 3, empty"><img id="circle-5" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-5" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
             </tr>
             <tr>
-                <td id="6" onclick="fillFields(6)"><img id="circle-6" class="resharp d-none" src="./img/circle.png"><img id="cross-6" class="resharp d-none" src="./img/cross.png"></td>
-                <td id="7" onclick="fillFields(7)"><img id="circle-7" class="resharp d-none" src="./img/circle.png"><img id="cross-7" class="resharp d-none" src="./img/cross.png"></td>
-                <td id="8" onclick="fillFields(8)"><img id="circle-8" class="resharp d-none" src="./img/circle.png"><img id="cross-8" class="resharp d-none" src="./img/cross.png"></td>
+                <td id="6"><button class="field" id="field-6" onclick="fillFields(6)" onkeydown="moveFocus(event, 6)" aria-label="Field 7, row 3, column 1, empty"><img id="circle-6" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-6" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
+                <td id="7"><button class="field" id="field-7" onclick="fillFields(7)" onkeydown="moveFocus(event, 7)" aria-label="Field 8, row 3, column 2, empty"><img id="circle-7" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-7" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
+                <td id="8"><button class="field" id="field-8" onclick="fillFields(8)" onkeydown="moveFocus(event, 8)" aria-label="Field 9, row 3, column 3, empty"><img id="circle-8" class="resharp d-none" src="./img/circle.png" alt=""><img id="cross-8" class="resharp d-none" src="./img/cross.png" alt=""></button></td>
             </tr>
         </table>
     </div>

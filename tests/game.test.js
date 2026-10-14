@@ -8,6 +8,9 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadApp } from "./harness.js";
 
 /** Play a sequence of field indices in order. */
@@ -229,6 +232,19 @@ describe("restart", () => {
     }
   });
 
+  it("hands the turn back to player 1, whoever moved last", () => {
+    // Circle wins the top row on the last move, so player 2 was highlighted
+    // when the round ended. After Start circle opens again, which is player 1.
+    const { window } = loadApp();
+    play(window, 0, 3, 1, 4, 2);
+    window.restart();
+
+    const player1 = window.document.getElementById("player1");
+    const player2 = window.document.getElementById("player2");
+    expect(player1.classList.contains("player-inactive")).toBe(false);
+    expect(player2.classList.contains("player-inactive")).toBe(true);
+  });
+
   it("lets a new game be played after a finished one", () => {
     const { window, evaluate } = loadApp();
     play(window, 0, 3, 1, 4, 2);
@@ -237,5 +253,141 @@ describe("restart", () => {
 
     expect(evaluate("fields")[8]).toBeDefined();
     expect(evaluate("gameOver")).toBe(false);
+  });
+});
+
+describe("board layout", () => {
+  // jsdom does no layout, so this checks the rule rather than pixels: the
+  // board shrinks on narrow screens, and a line placed in fixed pixels then
+  // misses the fields it is meant to cross. Every line is placed in percent
+  // of the board. The geometry itself was checked in a real browser at 360px
+  // and 1280px.
+  it("places every winning line in percent of the board", () => {
+    const { window } = loadApp();
+    for (let i = 1; i <= 8; i++) {
+      const style = window.document.getElementById(`line-${i}`).getAttribute("style");
+      const top = /top:\s*([^;]+)/.exec(style)[1];
+      const left = /left:\s*([^;]+)/.exec(style)[1];
+      expect(top, `line-${i} top`).toMatch(/%/);
+      expect(left === "0" || left.includes("%"), `line-${i} left: ${left}`).toBe(true);
+      const width = /width:\s*([^;]+)/.exec(style);
+      if (width) expect(width[1], `line-${i} width`).toMatch(/%$/);
+    }
+  });
+
+  it("sizes lines and cells so the board can shrink and stays square", () => {
+    const css = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "style.css"), "utf8");
+    const rule = (selector) => new RegExp(`(^|\\n)${selector}\\s*\\{([^}]*)\\}`).exec(css)[2];
+
+    expect(rule("\\.horizontal-line")).toMatch(/width:\s*\d+(\.\d+)?%/);
+    const td = rule("td");
+    const width = /width:\s*([^;]+);/.exec(td)[1];
+    const height = /height:\s*([^;]+);/.exec(td)[1];
+    expect(width).toBe(height);
+    expect(width).toMatch(/vw/);
+  });
+});
+
+describe("keyboard and screen reader", () => {
+  const field = (window, i) => window.document.getElementById(`field-${i}`);
+  const status = (window) => window.document.getElementById("status").textContent;
+  const press = (window, element, key) =>
+    element.dispatchEvent(new window.KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
+
+  it("makes every field a real button that plays a move", () => {
+    // A <button> is reachable with Tab and fires its click on Enter and Space.
+    const { window, evaluate } = loadApp();
+    for (let i = 0; i < 9; i++) {
+      expect(field(window, i).tagName).toBe("BUTTON");
+    }
+    field(window, 4).click();
+    expect(evaluate("fields")[4]).toBe("circle");
+  });
+
+  it("names each field by position and content", () => {
+    const { window } = loadApp();
+    expect(field(window, 0).getAttribute("aria-label")).toBe("Field 1, row 1, column 1, empty");
+    expect(field(window, 5).getAttribute("aria-label")).toBe("Field 6, row 2, column 3, empty");
+
+    window.fillFields(4);
+    window.fillFields(8);
+    expect(field(window, 4).getAttribute("aria-label")).toBe("Field 5, row 2, column 2, circle");
+    expect(field(window, 8).getAttribute("aria-label")).toBe("Field 9, row 3, column 3, cross");
+
+    window.restart();
+    expect(field(window, 4).getAttribute("aria-label")).toBe("Field 5, row 2, column 2, empty");
+  });
+
+  it("gives every image a text alternative", () => {
+    const { window } = loadApp();
+    for (const img of window.document.querySelectorAll("img")) {
+      expect(img.hasAttribute("alt"), img.outerHTML).toBe(true);
+    }
+  });
+
+  it("announces whose turn it is in a live region", () => {
+    const { window } = loadApp();
+    const region = window.document.getElementById("status");
+    expect(region.getAttribute("aria-live")).toBe("polite");
+    expect(status(window)).toBe("Player 1, circle, to move");
+
+    window.fillFields(0);
+    expect(status(window)).toBe("Player 2, cross, to move");
+    window.fillFields(1);
+    expect(status(window)).toBe("Player 1, circle, to move");
+  });
+
+  it("announces the winner and a draw, and a new game", () => {
+    const { window, evaluate } = loadApp();
+    window.fillFields(0); window.fillFields(3); window.fillFields(1);
+    window.fillFields(4); window.fillFields(2);
+    expect(status(window)).toBe("Player 1, circle, wins");
+
+    window.restart();
+    expect(status(window)).toBe("New game. Player 1, circle, to move");
+
+    // o x o / o x x / x o o, played in a legal order
+    for (const move of [0, 1, 2, 4, 3, 5, 7, 6, 8]) window.fillFields(move);
+    expect(evaluate("winner")).toBeNull();
+    expect(status(window)).toBe("Draw, nobody wins");
+  });
+
+  it("moves between fields with the arrow keys, wrapping at the edges", () => {
+    const { window } = loadApp();
+    field(window, 4).focus();
+
+    press(window, field(window, 4), "ArrowRight");
+    expect(window.document.activeElement.id).toBe("field-5");
+    press(window, field(window, 5), "ArrowRight");
+    expect(window.document.activeElement.id).toBe("field-3");
+    press(window, field(window, 3), "ArrowUp");
+    expect(window.document.activeElement.id).toBe("field-0");
+    press(window, field(window, 0), "ArrowUp");
+    expect(window.document.activeElement.id).toBe("field-6");
+    press(window, field(window, 6), "ArrowLeft");
+    expect(window.document.activeElement.id).toBe("field-8");
+    press(window, field(window, 8), "ArrowDown");
+    expect(window.document.activeElement.id).toBe("field-2");
+  });
+
+  it("leaves other keys alone", () => {
+    // Enter and Space must reach the button, so only arrows are swallowed.
+    const { window } = loadApp();
+    field(window, 4).focus();
+    const notCancelled = press(window, field(window, 4), "Enter");
+    expect(notCancelled).toBe(true);
+    expect(window.document.activeElement.id).toBe("field-4");
+  });
+
+  it("puts the focus on Start when the round ends, and back on the board after", async () => {
+    const { window } = loadApp();
+    window.fillFields(0); window.fillFields(3); window.fillFields(1);
+    window.fillFields(4); window.fillFields(2);
+
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    expect(window.document.activeElement.id).toBe("start");
+
+    window.document.getElementById("start").click();
+    expect(window.document.activeElement.id).toBe("field-0");
   });
 });

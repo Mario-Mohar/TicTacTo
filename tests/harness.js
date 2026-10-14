@@ -21,6 +21,10 @@ export function loadApp({ now = null, storage = {} } = {}) {
   const dom = new JSDOM(readFileSync(join(ROOT, "index.html"), "utf8"), {
     url: "http://localhost/",
     pretendToBeVisual: true,
+    // Lets the inline onclick and onkeydown handlers in index.html run, so a
+    // test can press a field the way a player does. Without `resources` jsdom
+    // still fetches no <script src>, script.js is loaded below.
+    runScripts: "dangerously",
   });
   const { window } = dom;
 
