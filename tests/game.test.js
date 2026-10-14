@@ -229,6 +229,19 @@ describe("restart", () => {
     }
   });
 
+  it("hands the turn back to player 1, whoever moved last", () => {
+    // Circle wins the top row on the last move, so player 2 was highlighted
+    // when the round ended. After Start circle opens again, which is player 1.
+    const { window } = loadApp();
+    play(window, 0, 3, 1, 4, 2);
+    window.restart();
+
+    const player1 = window.document.getElementById("player1");
+    const player2 = window.document.getElementById("player2");
+    expect(player1.classList.contains("player-inactive")).toBe(false);
+    expect(player2.classList.contains("player-inactive")).toBe(true);
+  });
+
   it("lets a new game be played after a finished one", () => {
     const { window, evaluate } = loadApp();
     play(window, 0, 3, 1, 4, 2);

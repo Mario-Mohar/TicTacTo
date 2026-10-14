@@ -29,6 +29,10 @@ function restart() {
     winner = null;
     document.getElementById('gameover').classList.add('d-none');
     document.getElementById('start').classList.add('d-none');
+    // Kreis beginnt immer, also ist Spieler 1 wieder dran. Sonst bleibt nach
+    // einem Sieg von Kreis Spieler 2 hervorgehoben, obwohl Kreis setzt.
+    document.getElementById('player1').classList.remove('player-inactive');
+    document.getElementById('player2').classList.add('player-inactive');
 
     // Alle acht Linien, und ueber den Transform statt ueber d-none: die Linien
     // sind per CSS auf Skalierung 0 unsichtbar, nie per display. Wer sie
