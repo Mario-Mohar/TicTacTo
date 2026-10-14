@@ -73,6 +73,36 @@ tr td:last-child {
     transform: translate(-50%, -50%);
 }
 
+.field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.field:focus-visible {
+    outline: 4px solid rgb(2, 134, 13);
+    outline-offset: -4px;
+}
+
+/* Nur fuer Screenreader, sichtbar ist der Zug schon in der Spielerleiste. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .d-none {
     display: none;
 }
