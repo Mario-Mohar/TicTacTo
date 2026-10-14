@@ -8,6 +8,9 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadApp } from "./harness.js";
 
 /** Play a sequence of field indices in order. */
@@ -250,5 +253,37 @@ describe("restart", () => {
 
     expect(evaluate("fields")[8]).toBeDefined();
     expect(evaluate("gameOver")).toBe(false);
+  });
+});
+
+describe("board layout", () => {
+  // jsdom does no layout, so this checks the rule rather than pixels: the
+  // board shrinks on narrow screens, and a line placed in fixed pixels then
+  // misses the fields it is meant to cross. Every line is placed in percent
+  // of the board. The geometry itself was checked in a real browser at 360px
+  // and 1280px.
+  it("places every winning line in percent of the board", () => {
+    const { window } = loadApp();
+    for (let i = 1; i <= 8; i++) {
+      const style = window.document.getElementById(`line-${i}`).getAttribute("style");
+      const top = /top:\s*([^;]+)/.exec(style)[1];
+      const left = /left:\s*([^;]+)/.exec(style)[1];
+      expect(top, `line-${i} top`).toMatch(/%/);
+      expect(left === "0" || left.includes("%"), `line-${i} left: ${left}`).toBe(true);
+      const width = /width:\s*([^;]+)/.exec(style);
+      if (width) expect(width[1], `line-${i} width`).toMatch(/%$/);
+    }
+  });
+
+  it("sizes lines and cells so the board can shrink and stays square", () => {
+    const css = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "style.css"), "utf8");
+    const rule = (selector) => new RegExp(`(^|\\n)${selector}\\s*\\{([^}]*)\\}`).exec(css)[2];
+
+    expect(rule("\\.horizontal-line")).toMatch(/width:\s*\d+(\.\d+)?%/);
+    const td = rule("td");
+    const width = /width:\s*([^;]+);/.exec(td)[1];
+    const height = /height:\s*([^;]+);/.exec(td)[1];
+    expect(width).toBe(height);
+    expect(width).toMatch(/vw/);
   });
 });

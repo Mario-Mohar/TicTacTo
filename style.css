@@ -33,10 +33,13 @@ tr {
     width: 400px;
 }
 
+/* Feldgroesse waechst nicht ueber 133px, schrumpft aber mit dem Fenster.
+   Breite und Hoehe bleiben gleich, damit das Brett quadratisch bleibt und
+   die Gewinnlinien in Prozent des Bretts durch die Feldmitten laufen. */
 td {
     position: relative;
-    width: 133px;
-    height: 133px;
+    width: min(133px, calc((100vw - 32px) / 3));
+    height: min(133px, calc((100vw - 32px) / 3));
     border: 5px solid #000;
     cursor: pointer;
 }
@@ -63,12 +66,11 @@ tr td:last-child {
 
 .resharp {
     position: absolute;
-    top: 26px;
-    left: 26px;
-    bottom: 0;
-    right: 26px;
-    width: 80px;
-    height: 80px;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
 }
 
 .d-none {
@@ -77,7 +79,7 @@ tr td:last-child {
 
 .horizontal-line {
     height: 10px;
-    width: 300px;
+    width: 75%;
     position: absolute;
     background-color: rgba(255, 0, 0, 0.5);
     transform: scaleX(0.0);
